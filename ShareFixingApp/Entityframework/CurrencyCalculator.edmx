@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CurrencyCalculatorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CapitalBackup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TodayAmount" Type="float" Nullable="false" />
+          <Property Name="Capital" Type="float" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CashInHand" Type="float" Nullable="false" />
+          <Property Name="Difference" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CurrencyNames">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Symbol" Type="nchar" MaxLength="2" />
+          <Property Name="Flag" Type="image" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="UperRange" Type="float" />
+          <Property Name="LowerRange" Type="float" />
+        </EntityType>
+        <EntityType Name="FCAverageRates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrencyNameId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="float" />
+          <Property Name="Average" Type="float" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="DateUpdated" Type="date" />
+        </EntityType>
+        <EntityType Name="LoanDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoanTakerId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="IsReceivable" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="Description" Type="text" />
+          <Property Name="LoanType" Type="int" />
+        </EntityType>
+        <EntityType Name="LoanTaker">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalePurchase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrencyNameId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="IsPurchase" Type="bit" Nullable="false" />
+          <Property Name="Rate" Type="float" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ShareHolder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Percentage" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="DateUpdated" Type="date" />
+          <Property Name="LoanTakerId" Type="int" />
+        </EntityType>
+        <EntityType Name="SHProfitDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Profit" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ShareHolderId" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="TodayShare" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_FCAverageRates_CurrencyNames">
+          <End Role="CurrencyNames" Type="Self.CurrencyNames" Multiplicity="1" />
+          <End Role="FCAverageRates" Type="Self.FCAverageRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyNames">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FCAverageRates">
+              <PropertyRef Name="CurrencyNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanDetail_LoanTaker">
+          <End Role="LoanTaker" Type="Self.LoanTaker" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanTaker">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="LoanTakerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanTaker_LoanTaker">
+          <End Role="LoanTaker" Type="Self.LoanTaker" Multiplicity="1" />
+          <End Role="LoanTaker1" Type="Self.LoanTaker" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LoanTaker">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoanTaker1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalePurchase_CurrencyNames">
+          <End Role="CurrencyNames" Type="Self.CurrencyNames" Multiplicity="1" />
+          <End Role="SalePurchase" Type="Self.SalePurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyNames">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalePurchase">
+              <PropertyRef Name="CurrencyNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SHProfitDetail_ShareHolder">
+          <End Role="ShareHolder" Type="Self.ShareHolder" Multiplicity="1" />
+          <End Role="SHProfitDetail" Type="Self.SHProfitDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareHolder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SHProfitDetail">
+              <PropertyRef Name="ShareHolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CurrencyCalculatorModelStoreContainer">
+          <EntitySet Name="CapitalBackup" EntityType="Self.CapitalBackup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyNames" EntityType="Self.CurrencyNames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FCAverageRates" EntityType="Self.FCAverageRates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanDetail" EntityType="Self.LoanDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanTaker" EntityType="Self.LoanTaker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalePurchase" EntityType="Self.SalePurchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShareHolder" EntityType="Self.ShareHolder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SHProfitDetail" EntityType="Self.SHProfitDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FCAverageRates_CurrencyNames" Association="Self.FK_FCAverageRates_CurrencyNames">
+            <End Role="CurrencyNames" EntitySet="CurrencyNames" />
+            <End Role="FCAverageRates" EntitySet="FCAverageRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanDetail_LoanTaker" Association="Self.FK_LoanDetail_LoanTaker">
+            <End Role="LoanTaker" EntitySet="LoanTaker" />
+            <End Role="LoanDetail" EntitySet="LoanDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanTaker_LoanTaker" Association="Self.FK_LoanTaker_LoanTaker">
+            <End Role="LoanTaker" EntitySet="LoanTaker" />
+            <End Role="LoanTaker1" EntitySet="LoanTaker" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalePurchase_CurrencyNames" Association="Self.FK_SalePurchase_CurrencyNames">
+            <End Role="CurrencyNames" EntitySet="CurrencyNames" />
+            <End Role="SalePurchase" EntitySet="SalePurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SHProfitDetail_ShareHolder" Association="Self.FK_SHProfitDetail_ShareHolder">
+            <End Role="ShareHolder" EntitySet="ShareHolder" />
+            <End Role="SHProfitDetail" EntitySet="SHProfitDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CurrencyCalculatorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CapitalBackup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TodayAmount" Type="Double" Nullable="false" />
+          <Property Name="Capital" Type="Double" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CashInHand" Type="Double" Nullable="false" />
+          <Property Name="Difference" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CurrencyName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Symbol" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="Flag" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="UperRange" Type="Double" />
+          <Property Name="LowerRange" Type="Double" />
+          <NavigationProperty Name="FCAverageRates" Relationship="Self.FK_FCAverageRates_CurrencyNames" FromRole="CurrencyNames" ToRole="FCAverageRates" />
+          <NavigationProperty Name="SalePurchases" Relationship="Self.FK_SalePurchase_CurrencyNames" FromRole="CurrencyNames" ToRole="SalePurchase" />
+        </EntityType>
+        <EntityType Name="FCAverageRate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyNameId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="Average" Type="Double" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CurrencyName" Relationship="Self.FK_FCAverageRates_CurrencyNames" FromRole="FCAverageRates" ToRole="CurrencyNames" />
+        </EntityType>
+        <EntityType Name="LoanDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoanTakerId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="IsReceivable" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LoanType" Type="Int32" />
+          <NavigationProperty Name="LoanTaker" Relationship="Self.FK_LoanDetail_LoanTaker" FromRole="LoanDetail" ToRole="LoanTaker" />
+        </EntityType>
+        <EntityType Name="LoanTaker">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LoanDetails" Relationship="Self.FK_LoanDetail_LoanTaker" FromRole="LoanTaker" ToRole="LoanDetail" />
+          <NavigationProperty Name="LoanTaker1" Relationship="Self.FK_LoanTaker_LoanTaker" FromRole="LoanTaker" ToRole="LoanTaker1" />
+          <NavigationProperty Name="LoanTaker2" Relationship="Self.FK_LoanTaker_LoanTaker" FromRole="LoanTaker1" ToRole="LoanTaker" />
+        </EntityType>
+        <EntityType Name="SalePurchase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrencyNameId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsPurchase" Type="Boolean" Nullable="false" />
+          <Property Name="Rate" Type="Double" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="CurrencyName" Relationship="Self.FK_SalePurchase_CurrencyNames" FromRole="SalePurchase" ToRole="CurrencyNames" />
+        </EntityType>
+        <EntityType Name="ShareHolder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Percentage" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="0" />
+          <Property Name="LoanTakerId" Type="Int32" />
+          <NavigationProperty Name="SHProfitDetails" Relationship="Self.FK_SHProfitDetail_ShareHolder" FromRole="ShareHolder" ToRole="SHProfitDetail" />
+        </EntityType>
+        <EntityType Name="SHProfitDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Profit" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ShareHolderId" Type="Int32" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TodayShare" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="ShareHolder" Relationship="Self.FK_SHProfitDetail_ShareHolder" FromRole="SHProfitDetail" ToRole="ShareHolder" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_FCAverageRates_CurrencyNames">
+          <End Role="CurrencyNames" Type="Self.CurrencyName" Multiplicity="1" />
+          <End Role="FCAverageRates" Type="Self.FCAverageRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyNames">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FCAverageRates">
+              <PropertyRef Name="CurrencyNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalePurchase_CurrencyNames">
+          <End Role="CurrencyNames" Type="Self.CurrencyName" Multiplicity="1" />
+          <End Role="SalePurchase" Type="Self.SalePurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrencyNames">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalePurchase">
+              <PropertyRef Name="CurrencyNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanDetail_LoanTaker">
+          <End Role="LoanTaker" Type="Self.LoanTaker" Multiplicity="1" />
+          <End Role="LoanDetail" Type="Self.LoanDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanTaker">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoanDetail">
+              <PropertyRef Name="LoanTakerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanTaker_LoanTaker">
+          <End Role="LoanTaker" Type="Self.LoanTaker" Multiplicity="1" />
+          <End Role="LoanTaker1" Type="Self.LoanTaker" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LoanTaker">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LoanTaker1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SHProfitDetail_ShareHolder">
+          <End Role="ShareHolder" Type="Self.ShareHolder" Multiplicity="1" />
+          <End Role="SHProfitDetail" Type="Self.SHProfitDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareHolder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SHProfitDetail">
+              <PropertyRef Name="ShareHolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CurrencyCalculatorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CapitalBackups" EntityType="Self.CapitalBackup" />
+          <EntitySet Name="CurrencyNames" EntityType="Self.CurrencyName" />
+          <EntitySet Name="FCAverageRates" EntityType="Self.FCAverageRate" />
+          <EntitySet Name="LoanDetails" EntityType="Self.LoanDetail" />
+          <EntitySet Name="LoanTakers" EntityType="Self.LoanTaker" />
+          <EntitySet Name="SalePurchases" EntityType="Self.SalePurchase" />
+          <EntitySet Name="ShareHolders" EntityType="Self.ShareHolder" />
+          <EntitySet Name="SHProfitDetails" EntityType="Self.SHProfitDetail" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_FCAverageRates_CurrencyNames" Association="Self.FK_FCAverageRates_CurrencyNames">
+            <End Role="CurrencyNames" EntitySet="CurrencyNames" />
+            <End Role="FCAverageRates" EntitySet="FCAverageRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalePurchase_CurrencyNames" Association="Self.FK_SalePurchase_CurrencyNames">
+            <End Role="CurrencyNames" EntitySet="CurrencyNames" />
+            <End Role="SalePurchase" EntitySet="SalePurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanDetail_LoanTaker" Association="Self.FK_LoanDetail_LoanTaker">
+            <End Role="LoanTaker" EntitySet="LoanTakers" />
+            <End Role="LoanDetail" EntitySet="LoanDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanTaker_LoanTaker" Association="Self.FK_LoanTaker_LoanTaker">
+            <End Role="LoanTaker" EntitySet="LoanTakers" />
+            <End Role="LoanTaker1" EntitySet="LoanTakers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SHProfitDetail_ShareHolder" Association="Self.FK_SHProfitDetail_ShareHolder">
+            <End Role="ShareHolder" EntitySet="ShareHolders" />
+            <End Role="SHProfitDetail" EntitySet="SHProfitDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CurrencyCalculatorModelStoreContainer" CdmEntityContainer="CurrencyCalculatorEntities">
+          <EntitySetMapping Name="CapitalBackups">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.CapitalBackup">
+              <MappingFragment StoreEntitySet="CapitalBackup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TodayAmount" ColumnName="TodayAmount" />
+                <ScalarProperty Name="Capital" ColumnName="Capital" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CashInHand" ColumnName="CashInHand" />
+                <ScalarProperty Name="Difference" ColumnName="Difference" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyNames">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.CurrencyName">
+              <MappingFragment StoreEntitySet="CurrencyNames">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UperRange" ColumnName="UperRange" />
+                <ScalarProperty Name="LowerRange" ColumnName="LowerRange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FCAverageRates">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.FCAverageRate">
+              <MappingFragment StoreEntitySet="FCAverageRates">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CurrencyNameId" ColumnName="CurrencyNameId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanDetails">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.LoanDetail">
+              <MappingFragment StoreEntitySet="LoanDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LoanTakerId" ColumnName="LoanTakerId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsReceivable" ColumnName="IsReceivable" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LoanType" ColumnName="LoanType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanTakers">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.LoanTaker">
+              <MappingFragment StoreEntitySet="LoanTaker">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalePurchases">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.SalePurchase">
+              <MappingFragment StoreEntitySet="SalePurchase">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CurrencyNameId" ColumnName="CurrencyNameId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="IsPurchase" ColumnName="IsPurchase" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShareHolders">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.ShareHolder">
+              <MappingFragment StoreEntitySet="ShareHolder">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="LoanTakerId" ColumnName="LoanTakerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SHProfitDetails">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.SHProfitDetail">
+              <MappingFragment StoreEntitySet="SHProfitDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Profit" ColumnName="Profit" />
+                <ScalarProperty Name="ShareHolderId" ColumnName="ShareHolderId" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="TodayShare" ColumnName="TodayShare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CurrencyCalculatorModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
