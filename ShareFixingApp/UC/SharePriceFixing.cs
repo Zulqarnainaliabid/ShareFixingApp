@@ -68,6 +68,12 @@ namespace ShareFixingApp.UC
                     {
 
                         var current = context.SHProfitDetails.FirstOrDefault(x => x.DateAdded == date && x.ShareHolderId == shpd.ShareHolderId);
+                        if (current == null)
+                        {
+                            current = new SHProfitDetail();
+                            current.ShareHolderId = shpd.ShareHolderId;
+                            current.DateAdded = date;
+                        }
                         current.Profit = part;
                         current.TodayShare = (shpd.TodayShare + part - loanAmount);
                         context.SHProfitDetails.AddOrUpdate(current);

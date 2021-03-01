@@ -103,6 +103,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UC\CleaningDataUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UC\CleaningDataUC.Designer.cs">
+      <DependentUpon>CleaningDataUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UC\SharePriceFixing.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -121,6 +127,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UC\CleaningDataUC.resx">
+      <DependentUpon>CleaningDataUC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UC\SharePriceFixing.resx">
       <DependentUpon>SharePriceFixing.cs</DependentUpon>
     </EmbeddedResource>

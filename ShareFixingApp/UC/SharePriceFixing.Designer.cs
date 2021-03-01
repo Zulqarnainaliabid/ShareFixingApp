@@ -43,12 +43,12 @@
             // 
             this.dtpReport.Location = new System.Drawing.Point(120, 91);
             this.dtpReport.Name = "dtpReport";
-            this.dtpReport.Size = new System.Drawing.Size(191, 22);
+            this.dtpReport.Size = new System.Drawing.Size(277, 22);
             this.dtpReport.TabIndex = 0;
             // 
             // btnFix
             // 
-            this.btnFix.Location = new System.Drawing.Point(369, 90);
+            this.btnFix.Location = new System.Drawing.Point(451, 93);
             this.btnFix.Name = "btnFix";
             this.btnFix.Size = new System.Drawing.Size(75, 23);
             this.btnFix.TabIndex = 1;
@@ -131,7 +131,7 @@
             this.Controls.Add(this.btnFix);
             this.Controls.Add(this.dtpReport);
             this.Name = "SharePriceFixing";
-            this.Size = new System.Drawing.Size(613, 437);
+            this.Size = new System.Drawing.Size(637, 442);
             ((System.ComponentModel.ISupportInitialize)(this.totalProfit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
